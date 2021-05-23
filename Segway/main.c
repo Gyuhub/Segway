@@ -393,10 +393,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //=======================Speed P Control========================================    
     if(cnt4==27)
     {
-      Pencoder = (encoder_L-30000); // Á¦¾îÁÖ±âµ¿¾È È¸ÀüÇÑ encoder pulse
-      PAngle = Pencoder/(1064*2*PI); // deltaPulse/ºĞÇØ´É*2PI = Á¦¾îÁÖ±âµ¿¾È È¸ÀüÇÑ °¢µµ theta[rad]
+      Pencoder = (encoder_L-30000); // ì œì–´ì£¼ê¸°ë™ì•ˆ íšŒì „í•œ encoder pulse
+      PAngle = Pencoder/(1064*2*PI); // deltaPulse/ë¶„í•´ëŠ¥*2PI = ì œì–´ì£¼ê¸°ë™ì•ˆ íšŒì „í•œ ê°ë„ theta[rad]
       
-      PThetaDot = PAngle*1000/27; // Á¦¾îÁÖ±âµ¿¾È ¿òÁ÷ÀÎ °¢¼Óµµ rad/s
+      PThetaDot = PAngle*1000/27; // ì œì–´ì£¼ê¸°ë™ì•ˆ ì›€ì§ì¸ ê°ì†ë„ rad/s
       pYawDot = dYaw*1000/27;
       if(moveflagF||moveflagB||moveflagMF||moveflagMB)
       {
@@ -549,23 +549,23 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     if(cnt==time) // 3ms IP control
     {
     //===================ThetaDot,ThetaDDot=====================================  
-      Pulse_L = (encoder_L-30000); // Á¦¾îÁÖ±âµ¿¾È È¸ÀüÇÑ encoder pulse
-      Angle_L = Pulse_L/(1064*2*PI); // deltaPulse/ºĞÇØ´É*2PI = Á¦¾îÁÖ±âµ¿¾È È¸ÀüÇÑ °¢µµ theta[rad]
+      Pulse_L = (encoder_L-30000); // ì œì–´ì£¼ê¸°ë™ì•ˆ íšŒì „í•œ encoder pulse
+      Angle_L = Pulse_L/(1064*2*PI); // deltaPulse/ë¶„í•´ëŠ¥*2PI = ì œì–´ì£¼ê¸°ë™ì•ˆ íšŒì „í•œ ê°ë„ theta[rad]
       
       Pulse_R = (encoder_R - 30000);
       Angle_R = Pulse_R/(1064*2*PI);
       
       /*//We need not m/s but cm/s
-      Distance_L = Angle_L*6.5; // Á¦¾îÁÖ±âµ¿¾È ¿òÁ÷ÀÎ °Å¸® L = theta*r [cm]
+      Distance_L = Angle_L*6.5; // ì œì–´ì£¼ê¸°ë™ì•ˆ ì›€ì§ì¸ ê±°ë¦¬ L = theta*r [cm]
       Distance_R = Angle_R*6.5;
       
-      Speed_L = Distance_L/time; // Á¦¾îÁÖ±âµ¿¾È ¿òÁ÷ÀÎ ¼Óµµ v = L/t [cm/s]
+      Speed_L = Distance_L/time; // ì œì–´ì£¼ê¸°ë™ì•ˆ ì›€ì§ì¸ ì†ë„ v = L/t [cm/s]
       Speed_R = Distance_R/time;*/
       
-      ThetaDot = Angle_L*1000/time; // Á¦¾îÁÖ±âµ¿¾È ¿òÁ÷ÀÎ °¢¼Óµµ rad/s
+      ThetaDot = Angle_L*1000/time; // ì œì–´ì£¼ê¸°ë™ì•ˆ ì›€ì§ì¸ ê°ì†ë„ rad/s
       ThetaDot2 = Angle_R*1000/time;
       
-      ThetaDDot = ThetaDot*1000/time; // Á¦¾îÁÖ±âµ¿¾È ¿òÁ÷ÀÎ °¢°¡¼Óµµ rad/s^2
+      ThetaDDot = ThetaDot*1000/time; // ì œì–´ì£¼ê¸°ë™ì•ˆ ì›€ì§ì¸ ê°ê°€ì†ë„ rad/s^2
       ThetaDDot2 = ThetaDot2*1000/time; 
       
     //===================Linearty(when |iRoll|<10)==============================
@@ -591,20 +591,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       //Left
       ErrSpeed = TargetSpeed - ThetaDot;
       ErrSumSpeed += ErrSpeed;
-      IP_out_AngleSpeed = -Kp*ThetaDot + Ki*ErrSumSpeed; // IP_out_AngleSpeedÀº °è»êÀ» °ÅÄ£ ¸ñÇ¥ AngleSpeed W [rad/s]
+      IP_out_AngleSpeed = -Kp*ThetaDot + Ki*ErrSumSpeed; // IP_out_AngleSpeedì€ ê³„ì‚°ì„ ê±°ì¹œ ëª©í‘œ AngleSpeed W [rad/s]
       
       ErrAccel = TargetAccel - ThetaDDot;
       ErrSumAccel += ErrAccel;
-      IP_out_AngleAccel = -Kp*ThetaDDot + Ki*ErrSumAccel; // IP_out_AngleAccel °è»êÀ» °ÅÄ£ ¸ñÇ¥ AngleAccel a [rad/s^2]
+      IP_out_AngleAccel = -Kp*ThetaDDot + Ki*ErrSumAccel; // IP_out_AngleAccel ê³„ì‚°ì„ ê±°ì¹œ ëª©í‘œ AngleAccel a [rad/s^2]
       
       //Right
       ErrSpeed2 = TargetSpeed2 - ThetaDot2;
       ErrSumSpeed2 += ErrSpeed2;
-      IP_out_AngleSpeed2 = -Kp*ThetaDot2 + Ki*ErrSumSpeed2; // IP_out_AngleSpeedÀº °è»êÀ» °ÅÄ£ ¸ñÇ¥ AngleSpeed W [rad/s]
+      IP_out_AngleSpeed2 = -Kp*ThetaDot2 + Ki*ErrSumSpeed2; // IP_out_AngleSpeedì€ ê³„ì‚°ì„ ê±°ì¹œ ëª©í‘œ AngleSpeed W [rad/s]
       
       ErrAccel2 = TargetAccel2 - ThetaDDot2;
       ErrSumAccel2 += ErrAccel2;
-      IP_out_AngleAccel2 = -Kp*ThetaDDot2 + Ki*ErrSumAccel2; // IP_out_AngleAccel °è»êÀ» °ÅÄ£ ¸ñÇ¥ AngleAccel a [rad/s^2]
+      IP_out_AngleAccel2 = -Kp*ThetaDDot2 + Ki*ErrSumAccel2; // IP_out_AngleAccel ê³„ì‚°ì„ ê±°ì¹œ ëª©í‘œ AngleAccel a [rad/s^2]
       
       JThetaDot = IP_out_AngleSpeed;
     //===================Voltage Calculate======================================
@@ -627,11 +627,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       
         ErrYawDot = TargetYaw/time - YawDot;
         ErrSumYawDot += ErrYawDot;
-        PIYawDot = YawKp*ErrYawDot + YawKi*ErrSumYawDot; // IPYawDot °è»êÀ» °ÅÄ£ ¸ñÇ¥ PhiDot
+        PIYawDot = YawKp*ErrYawDot + YawKi*ErrSumYawDot; // IPYawDot ê³„ì‚°ì„ ê±°ì¹œ ëª©í‘œ PhiDot
         
         ErrYawDDot = (TargetYaw/time)/time - YawDDot;
         ErrSumYawDDot += ErrYawDDot;
-        PIYawDDot = YawKp*ErrYawDDot + YawKi*ErrSumYawDDot; // IPYawDDot °è»êÀ» °ÅÄ£ ¸ñÇ¥ PhiDDot
+        PIYawDDot = YawKp*ErrYawDDot + YawKi*ErrSumYawDDot; // IPYawDDot ê³„ì‚°ì„ ê±°ì¹œ ëª©í‘œ PhiDDot
         
         SpinVoltage = (iota*PIYawDDot + kappa*PIYawDot)/lambda;
         
@@ -643,9 +643,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         
         PreSpinVoltage = spinVoltR;
     //===================Spin Direction Control=================================
-        if(spinVoltL<0) { spinVoltL = spinVoltL*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_SET);} // SpinVoltLÀÌ positiveÀÌ¸é ¹İ½Ã°è¹æÇâÀ¸·Î ¹ÙÄû°¡ È¸Àü
+        if(spinVoltL<0) { spinVoltL = spinVoltL*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_SET);} // SpinVoltLì´ positiveì´ë©´ ë°˜ì‹œê³„ë°©í–¥ìœ¼ë¡œ ë°”í€´ê°€ íšŒì „
         else { HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_RESET);}
-        if(spinVoltR<0) { spinVoltR = spinVoltR*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_SET);} // SpinVoltRÀÌ positiveÀÌ¸é ¹İ½Ã°è¹æÇâÀ¸·Î ¹ÙÄû°¡ È¸Àü
+        if(spinVoltR<0) { spinVoltR = spinVoltR*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_SET);} // SpinVoltRì´ positiveì´ë©´ ë°˜ì‹œê³„ë°©í–¥ìœ¼ë¡œ ë°”í€´ê°€ íšŒì „
         else { HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_RESET);}
       }
     //===================Spin right=============================================
@@ -657,11 +657,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       
         ErrYawDot = TargetYaw/time - YawDot;
         ErrSumYawDot += ErrYawDot;
-        PIYawDot = YawKp*ErrYawDot + YawKi*ErrSumYawDot; // IPYawDot °è»êÀ» °ÅÄ£ ¸ñÇ¥ PhiDot
+        PIYawDot = YawKp*ErrYawDot + YawKi*ErrSumYawDot; // IPYawDot ê³„ì‚°ì„ ê±°ì¹œ ëª©í‘œ PhiDot
         
         ErrYawDDot = (TargetYaw/time)/time - YawDDot;
         ErrSumYawDDot += ErrYawDDot;
-        PIYawDDot = YawKp*ErrYawDDot + YawKi*ErrSumYawDDot; // IPYawDDot °è»êÀ» °ÅÄ£ ¸ñÇ¥ PhiDDot
+        PIYawDDot = YawKp*ErrYawDDot + YawKi*ErrSumYawDDot; // IPYawDDot ê³„ì‚°ì„ ê±°ì¹œ ëª©í‘œ PhiDDot
         
         SpinVoltage = (iota*PIYawDDot + kappa*PIYawDot)/lambda;        
         
@@ -673,23 +673,23 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
         PreSpinVoltage = spinVoltL;
     //===================Spin Direction Control=================================
-        if(spinVoltL<0) { spinVoltL = spinVoltL*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_RESET);} // SpinVoltLÀÌ positiveÀÌ¸é ¹İ½Ã°è¹æÇâÀ¸·Î ¹ÙÄû°¡ È¸Àü
+        if(spinVoltL<0) { spinVoltL = spinVoltL*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_RESET);} // SpinVoltLì´ positiveì´ë©´ ë°˜ì‹œê³„ë°©í–¥ìœ¼ë¡œ ë°”í€´ê°€ íšŒì „
         else { HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_SET);}
-        if(spinVoltR<0) { spinVoltR = spinVoltR*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_RESET);} // SpinVoltRÀÌ positiveÀÌ¸é ¹İ½Ã°è¹æÇâÀ¸·Î ¹ÙÄû°¡ È¸Àü
+        if(spinVoltR<0) { spinVoltR = spinVoltR*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_RESET);} // SpinVoltRì´ positiveì´ë©´ ë°˜ì‹œê³„ë°©í–¥ìœ¼ë¡œ ë°”í€´ê°€ íšŒì „
         else { HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_SET);}
       }
     //===================Voltage Direction Control==============================
       else
       {
-        if(Voltage<0) { Voltage = Voltage*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_SET); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_RESET);} // Voltage°¡ negativeÀÌ¸é positive·Î ¹Ù²ãÁØ´Ù
+        if(Voltage<0) { Voltage = Voltage*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_SET); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_RESET);} // Voltageê°€ negativeì´ë©´ positiveë¡œ ë°”ê¿”ì¤€ë‹¤
         else { HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_RESET); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_SET);}
-        if(Voltage2<0) { Voltage2 = Voltage2*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_SET); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_RESET);} // Voltage°¡ negativeÀÌ¸é positive·Î ¹Ù²ãÁØ´Ù
+        if(Voltage2<0) { Voltage2 = Voltage2*(-1.0); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_SET); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_RESET);} // Voltageê°€ negativeì´ë©´ positiveë¡œ ë°”ê¿”ì¤€ë‹¤
         else { HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_RESET); HAL_GPIO_WritePin(GPIOC,GPIO_PIN_9, GPIO_PIN_SET);}
       }
       PreVoltage = Voltage;
     //===================Spin Voltage Saturation================================
-      if(spinflagR||spinflagL||spinflagMR||spinflagML) {if(spinVoltR>3500.0)  {spinVoltR = 3500.0; } if(spinVoltL>3500.0) {spinVoltL = 3500.0;}}// È¸Àü ¾ÈÁ¤¼ºÀ» À§ÇØ PWMÀÇ ÃÖ´ñ°ªÀÌ 1000 ±× ÀÌ»óÀÌ¸é ÃÖ´ë·Î °íÁ¤
-      else {if(Voltage>4000.0)  {Voltage = 4000.0; } if(Voltage2>4000.0) {Voltage2 = 4000.0;} } // PWMÀÇ ÃÖ´ñ°ªÀÌ 3500 ±× ÀÌ»óÀÌ¸é ÃÖ´ë·Î °íÁ¤
+      if(spinflagR||spinflagL||spinflagMR||spinflagML) {if(spinVoltR>3500.0)  {spinVoltR = 3500.0; } if(spinVoltL>3500.0) {spinVoltL = 3500.0;}}// íšŒì „ ì•ˆì •ì„±ì„ ìœ„í•´ PWMì˜ ìµœëŒ“ê°’ì´ 1000 ê·¸ ì´ìƒì´ë©´ ìµœëŒ€ë¡œ ê³ ì •
+      else {if(Voltage>4000.0)  {Voltage = 4000.0; } if(Voltage2>4000.0) {Voltage2 = 4000.0;} } // PWMì˜ ìµœëŒ“ê°’ì´ 3500 ê·¸ ì´ìƒì´ë©´ ìµœëŒ€ë¡œ ê³ ì •
     //===================Motor PWM input========================================
       //MOTOR CCR CODE
       if(spinflagR||spinflagL||spinflagMR||spinflagML) { TIM4->CCR4 = spinVoltL; TIM4->CCR1 = spinVoltR;}
