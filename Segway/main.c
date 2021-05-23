@@ -82,6 +82,7 @@ int moveflagB=0;
 int moveflagMB=0;
 int stableflag=0;
 int tiltflag=0;
+
 volatile int JRefThetaDot;
 volatile int JThetaDot;
 volatile int JTargetRoll;
